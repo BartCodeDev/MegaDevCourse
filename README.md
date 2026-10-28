@@ -2,7 +2,7 @@
 
 Re-reading support ticket **#4471**. The desk merged **412** reports about wrong dates into one
 ticket and marked it *known* — one bug, one fix queued. Running the knowledge base's own cause
-logic over the export shows the one ticket is really **three distinct bugs**.
+logic over the export shows the one ticket is really **two distinct bugs**.
 
 ## Tickets filed (one per problem, with the reports each covers)
 
@@ -10,9 +10,10 @@ logic over the export shows the one ticket is really **three distinct bugs**.
 |---|---|---|
 | [#1](https://github.com/BartCodeDev/MegaDevCourse/issues/1) | Date parser reads month-first → day-first tenants' dates flip by a month | 374 |
 | [#2](https://github.com/BartCodeDev/MegaDevCourse/issues/2) | booking-v3 form hint (`MM/DD/YYYY`) misleads day-first users | 33 |
-| [#3](https://github.com/BartCodeDev/MegaDevCourse/issues/3) | Dates off by one day (timezone / day-boundary), not by a month | 5 |
 
-374 + 33 + 5 = 412.
+374 + 33 = 407. The remaining **5** reports (the desk's `oneDayMove` list) are off by a single day,
+not a month — a timezone / DST issue, **not** the parser. They are a footnote under #1 (with a
+request to check them before #4471 is closed), not a ticket of their own. 407 + 5 = 412.
 
 ## The knowledge base
 

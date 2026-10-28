@@ -1,6 +1,6 @@
 ---
 layout: runbook
-title: '#4471 · what it shows — three bugs, not one'
+title: '#4471 · what it shows — two bugs, not one'
 owner: aleksandra
 status: proposed
 reviewed: 2026-10-28
@@ -24,12 +24,13 @@ export with the desk's own cause logic shows **more than one bug** living under 
 The table is `causeOf()` ([`src/lib/kb/causes.ts`](../../../../lib/kb/causes.ts)) run over every report
 merged into #4471. It splits them into two causes, and only the larger — `parser` — has a ticket of
 its own. The `hint` reports were merged in by subject line and never got one. The footnote counts a
-third thing again: reports that are a one-day move, not a month flip. The *tagged as* column shows
-intake's own tags disagree with the cause, so the tags were not used to split.
+third kind of report: a one-day move, not a month flip — a timezone issue, handled as a footnote under
+the parser ticket, not a ticket of its own. The *tagged as* column shows intake's own tags disagree
+with the cause, so the tags were not used to split.
 
-## Three problems, three tickets
+## Two problems, two tickets
 
-The one ticket is really three. Each is now its own GitHub issue, with the count of reports it covers:
+The one ticket is really two. Each is now its own GitHub issue, with the count of reports it covers:
 
 1. **Parser reads dates month-first** — the day-first parser bug #4471 was opened for. Of the `parser`
    reports the table shows, 5 are the one-day move it footnotes; the rest are this bug.
@@ -37,11 +38,14 @@ The one ticket is really three. Each is now its own GitHub issue, with the count
 2. **booking-v3 form hint misleads day-first users** — a *different* bug: the form prints an
    `MM/DD/YYYY` hint, so day-first users type month-first. `form` channel only.
    → [issue #2](https://github.com/BartCodeDev/MegaDevCourse/issues/2) · **33 reports**
-3. **One-day / timezone shift** — dates off by a single day (a timezone / DST boundary), not by a
-   month. Mis-filed under `parser`; these are the desk's own `oneDayMove` list.
-   → [issue #3](https://github.com/BartCodeDev/MegaDevCourse/issues/3) · **5 reports**
 
-374 + 33 + 5 = 412.
+**Footnote — not a third ticket.** 5 reports (`R-41202`, `R-41209`, `R-41236`, `R-41344`, `R-41620` — the
+desk's `oneDayMove` list) are off by a single day, not by a month: a timezone / DST boundary, not the
+parser, because a month swap cannot move a date by one day. They sit in the `parser` row by tenant and the
+table footnotes them. The parser ticket (#1) leaves them out of its count and asks for a timezone check
+before #4471 is closed.
+
+374 + 33 = 407, and the 5 footnoted one-day reports make 412.
 
 <Callout>
 Merging by subject line ([decision 0001](../../decisions/0001-dedupe-by-subject)) is fast, but it
