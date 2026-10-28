@@ -32,9 +32,10 @@ with the cause, so the tags were not used to split.
 
 The one ticket is really two. Each is now its own GitHub issue, with the count of reports it covers:
 
-1. **Parser reads dates month-first** — the day-first parser bug #4471 was opened for. Of the `parser`
-   reports the table shows, 5 are the one-day move it footnotes; the rest are this bug.
-   → [issue #1](https://github.com/BartCodeDev/MegaDevCourse/issues/1) · **374 reports**
+1. **Parser reads dates month-first** — the day-first parser bug #4471 was opened for; the whole
+   `parser` cause-group, counted as the table counts it. 5 of these are a one-day move the table
+   footnotes (see below).
+   → [issue #1](https://github.com/BartCodeDev/MegaDevCourse/issues/1) · **379 reports**
 2. **booking-v3 form hint misleads day-first users** — a *different* bug: the form prints an
    `MM/DD/YYYY` hint, so day-first users type month-first. `form` channel only.
    → [issue #2](https://github.com/BartCodeDev/MegaDevCourse/issues/2) · **33 reports**
@@ -42,14 +43,14 @@ The one ticket is really two. Each is now its own GitHub issue, with the count o
 **Footnote — not a third ticket.** 5 reports (`R-41202`, `R-41209`, `R-41236`, `R-41344`, `R-41620` — the
 desk's `oneDayMove` list) are off by a single day, not by a month: a timezone / DST boundary, not the
 parser, because a month swap cannot move a date by one day. They sit in the `parser` row by tenant and the
-table footnotes them. The parser ticket (#1) leaves them out of its count and asks for a timezone check
-before #4471 is closed.
+table footnotes them. The parser ticket (#1) counts them (as the table does) and footnotes them, asking
+for a timezone check before #4471 is closed.
 
-374 + 33 = 407, and the 5 footnoted one-day reports make 412.
+379 + 33 = 412.
 
 <Callout>
 Merging by subject line ([decision 0001](../../decisions/0001-dedupe-by-subject)) is fast, but it
-counts bugs by how a reporter worded them, not by what causes them. #4471 is three bugs wearing one
+counts bugs by how a reporter worded them, not by what causes them. #4471 is two bugs wearing one
 subject.
 </Callout>
 

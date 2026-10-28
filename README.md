@@ -8,12 +8,13 @@ logic over the export shows the one ticket is really **two distinct bugs**.
 
 | Issue | Problem | Reports |
 |---|---|---|
-| [#1](https://github.com/BartCodeDev/MegaDevCourse/issues/1) | Date parser reads month-first → day-first tenants' dates flip by a month | 374 |
+| [#1](https://github.com/BartCodeDev/MegaDevCourse/issues/1) | Date parser reads month-first → day-first tenants' dates flip by a month | 379 |
 | [#2](https://github.com/BartCodeDev/MegaDevCourse/issues/2) | booking-v3 form hint (`MM/DD/YYYY`) misleads day-first users | 33 |
 
-374 + 33 = 407. The remaining **5** reports (the desk's `oneDayMove` list) are off by a single day,
-not a month — a timezone / DST issue, **not** the parser. They are a footnote under #1 (with a
-request to check them before #4471 is closed), not a ticket of their own. 407 + 5 = 412.
+379 + 33 = 412. Counted as the kb's own view (`CauseTable`) counts: one id = one report, cause from
+the tenant's locale and booking form. Of the 379 parser reports, **5** (the desk's `oneDayMove` list)
+are off by a single day, not a month — a timezone / DST issue, **not** the parser. They are counted in
+the parser total and footnoted under #1 (with a request to check them), not a ticket of their own.
 
 ## The knowledge base
 
