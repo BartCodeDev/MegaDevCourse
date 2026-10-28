@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>#4471 — what it shows: three bugs, not one · support kb</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--muted:#6b6a66;--line:#e3e0d8;--accent:#2f6f5e;--warn:#b4501f;--warn-bg:#fbeee6;--note-bg:#eef5f2;--mono:ui-monospace,'Cascadia Code',Menlo,monospace}
+@media(prefers-color-scheme:dark){:root{--bg:#171716;--fg:#ecebe6;--muted:#9c9a93;--line:#34332f;--accent:#6fbfa6;--warn:#f0905d;--warn-bg:#3a2418;--note-bg:#1d2c27}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif}
+.kb table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.92rem}
+.kb th,.kb td{border-bottom:1px solid var(--line);padding:.35rem .5rem;text-align:left}
+.kb code{font-family:var(--mono);font-size:.88em}
+.kb a{color:var(--accent)}
+.kb{max-width:760px;margin:0 auto;padding:2rem 16px 4rem}
+.crumb{font:.8rem var(--mono);text-decoration:none;color:var(--muted)}
+h1{margin:.25rem 0 .5rem;line-height:1.2}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1rem;color:var(--muted);font-size:.85rem;margin:0}
+.status{border:1px solid var(--line);border-radius:99px;padding:0 .6rem}
+.banner{background:var(--warn-bg);color:var(--warn);padding:.6rem 1rem;border-radius:6px}
+footer{margin-top:3rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);padding-top:1rem}
+aside{border-left:4px solid var(--accent);padding:.5rem 1rem;margin:1rem 0;background:var(--note-bg)}
+.sum{font-size:1.1rem}
+.tags,.note{color:var(--muted);font-size:.85em}
+.wrong td{background:var(--warn-bg)}
+.wrong td:last-child{color:var(--warn);font-weight:600}
+svg{width:100%;max-width:640px}
+.in{fill:var(--warn)}.merged{fill:var(--accent)}
+text{font:8px var(--mono);fill:var(--muted);text-anchor:middle}
+figcaption{color:var(--muted);font-size:.85rem}
+.key{display:inline-block;width:.7em;height:.7em;border-radius:2px}
+.key.in{background:var(--warn)}.key.merged{background:var(--accent)}
+.stamp{margin:2rem 0 0;font:.85rem var(--mono);color:var(--muted)}
+.stamp b{color:var(--accent);letter-spacing:.04em}
+.missing{color:var(--warn)}
+</style>
+</head>
+<body>
+<div class="kb">
+<header>
+<a class="crumb" href="#">support desk · kb</a>
+<h1>#4471 — what it shows: three bugs, not one</h1>
+<p class="meta"><span>owner <b>support desk</b></span> <span class="status">open</span> <span>reviewed 2026-10-28 · 0 days ago</span></p>
+</header>
+<main>
+
+<p>#4471 was closed as <em>known</em>: one bug, reported 412 times, one fix queued. Re-reading the export with the desk's own cause logic shows <strong>three bugs</strong> living under that one ticket. The parser fix closes one; the other two would stay inside it, marked known, with nobody looking at them.</p>
+<aside>Do not close the reports in #4471 when the parser fix ships. Two more problems are inside it.</aside>
+<h2>What the data shows</h2>
+<p class="sum"><strong>412</strong> reports merged into #4471 · <strong>2</strong> causes</p>
+<table><thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th></th></tr></thead><tbody><tr><td><code>parser</code></td><td>379</td><td class="tags">parser ×356 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td>#4471</td></tr><tr class="wrong"><td><code>hint</code></td><td>33</td><td class="tags">hint ×18 · parser ×15</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td>not this ticket — no ticket of its own</td></tr></tbody></table>
+<p class="note">5 reports read as a one-day move; filed under <code>parser</code> by tenant.</p>
+<p>The table is <code>causeOf()</code> run over every report merged into #4471. It shows two causes &mdash; <code>parser</code> and <code>hint</code> &mdash; and only the larger, <code>parser</code>, has a ticket of its own. The footnote under it marks a third thing: reports read as a one-day move, filed in the <code>parser</code> row by tenant. The <em>tagged as</em> column shows intake's own tags disagree with the cause, so the tags were not used to split.</p>
+<h2>Three problems, three tickets</h2>
+<p>Each is its own GitHub issue, with the count of reports it covers, counted as the table counts (one id = one report; cause from the tenant's locale and form):</p>
+<ol>
+<li><strong>Parser reads dates month-first</strong> &mdash; the day-first bug #4471 was opened for; the whole <code>parser</code> cause-group. Fixed by the desk &rarr; closed. Ticket: <a href="https://github.com/BartCodeDev/MegaDevCourse/issues/1">#1</a> · <strong>379 reports</strong>.</li>
+<li><strong>booking-v3 form hint misleads day-first users</strong> &mdash; a <em>different</em> bug: the form prints an <code>MM/DD/YYYY</code> hint, so day-first users type month-first. <code>form</code> channel only. The parser fix does not touch it &rarr; closed as not planned. Ticket: <a href="https://github.com/BartCodeDev/MegaDevCourse/issues/2">#2</a> · <strong>33 reports</strong>.</li>
+<li><strong>One-day / timezone shift</strong> &mdash; dates off by a single day, not swapped by a month. The desk's own <code>oneDayMove</code> footnote; a swap cannot move a date by one day, so it is a third problem &mdash; unconfirmed, still <strong>open</strong>. Ticket: <a href="https://github.com/BartCodeDev/MegaDevCourse/issues/3">#3</a> · <strong>5 reports</strong>.</li>
+</ol>
+<p>The two causes are 379 + 33 = 412. The 5 one-day reports are a subset of the <code>parser</code> row, taken out for their own ticket (#3) because they are not a month flip.</p>
+<aside>Merging by subject line (decision 0001) is fast, but it counts bugs by how a reporter worded them, not by what causes them. #4471 is three bugs wearing one subject.</aside>
+<h2>Since April</h2>
+<figure><svg viewBox="0 0 648 140" role="img" aria-label="reports received and merged into #4471, per week"><rect class="in" x="2" y="106.29629629629629" width="9" height="3.7037037037037033"></rect><rect class="merged" x="12" y="110" width="9" height="0"></rect><text x="12" y="128">03-30</text><rect class="in" x="26" y="104.17989417989418" width="9" height="5.82010582010582"></rect><rect class="merged" x="36" y="110" width="9" height="0"></rect><rect class="in" x="50" y="102.5925925925926" width="9" height="7.4074074074074066"></rect><rect class="merged" x="60" y="110" width="9" height="0"></rect><rect class="in" x="74" y="99.94708994708995" width="9" height="10.052910052910052"></rect><rect class="merged" x="84" y="110" width="9" height="0"></rect><rect class="in" x="98" y="101.53439153439153" width="9" height="8.465608465608465"></rect><rect class="merged" x="108" y="110" width="9" height="0"></rect><text x="108" y="128">04-27</text><rect class="in" x="122" y="103.65079365079364" width="9" height="6.349206349206349"></rect><rect class="merged" x="132" y="110" width="9" height="0"></rect><rect class="in" x="146" y="105.76719576719577" width="9" height="4.232804232804233"></rect><rect class="merged" x="156" y="110" width="9" height="0"></rect><rect class="in" x="170" y="103.65079365079364" width="9" height="6.349206349206349"></rect><rect class="merged" x="180" y="110" width="9" height="0"></rect><rect class="in" x="194" y="102.5925925925926" width="9" height="7.4074074074074066"></rect><rect class="merged" x="204" y="110" width="9" height="0"></rect><text x="204" y="128">05-25</text><rect class="in" x="218" y="101.00529100529101" width="9" height="8.994708994708994"></rect><rect class="merged" x="228" y="110" width="9" height="0"></rect><rect class="in" x="242" y="101.53439153439153" width="9" height="8.465608465608465"></rect><rect class="merged" x="252" y="110" width="9" height="0"></rect><rect class="in" x="266" y="101.00529100529101" width="9" height="8.994708994708994"></rect><rect class="merged" x="276" y="110" width="9" height="0"></rect><rect class="in" x="290" y="104.17989417989418" width="9" height="5.82010582010582"></rect><rect class="merged" x="300" y="110" width="9" height="0"></rect><text x="300" y="128">06-22</text><rect class="in" x="314" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged" x="324" y="10" width="9" height="100"></rect><rect class="in" x="338" y="99.94708994708995" width="9" height="10.052910052910052"></rect><rect class="merged" x="348" y="100.47619047619048" width="9" height="9.523809523809524"></rect><rect class="in" x="362" y="101.00529100529101" width="9" height="8.994708994708994"></rect><rect class="merged" x="372" y="100.47619047619048" width="9" height="9.523809523809524"></rect><rect class="in" x="386" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged" x="396" y="102.06349206349206" width="9" height="7.936507936507936"></rect><text x="396" y="128">07-20</text><rect class="in" x="410" y="99.94708994708995" width="9" height="10.052910052910052"></rect><rect class="merged" x="420" y="99.94708994708995" width="9" height="10.052910052910052"></rect><rect class="in" x="434" y="105.76719576719577" width="9" height="4.232804232804233"></rect><rect class="merged" x="444" y="105.76719576719577" width="9" height="4.232804232804233"></rect><rect class="in" x="458" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged" x="468" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="in" x="482" y="99.41798941798942" width="9" height="10.582010582010582"></rect><rect class="merged" x="492" y="99.41798941798942" width="9" height="10.582010582010582"></rect><text x="492" y="128">08-17</text><rect class="in" x="506" y="102.5925925925926" width="9" height="7.4074074074074066"></rect><rect class="merged" x="516" y="102.5925925925926" width="9" height="7.4074074074074066"></rect><rect class="in" x="530" y="98.88888888888889" width="9" height="11.11111111111111"></rect><rect class="merged" x="540" y="98.88888888888889" width="9" height="11.11111111111111"></rect><rect class="in" x="554" y="99.41798941798942" width="9" height="10.582010582010582"></rect><rect class="merged" x="564" y="99.41798941798942" width="9" height="10.582010582010582"></rect><rect class="in" x="578" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged" x="588" y="102.06349206349206" width="9" height="7.936507936507936"></rect><text x="588" y="128">09-14</text><rect class="in" x="602" y="96.77248677248677" width="9" height="13.227513227513226"></rect><rect class="merged" x="612" y="97.83068783068784" width="9" height="12.16931216931217"></rect><rect class="in" x="626" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged" x="636" y="101.00529100529101" width="9" height="8.994708994708994"></rect></svg><figcaption><span class="key in"></span> received · <span class="key merged"></span> merged into #4471 · per week</figcaption></figure>
+<h2>How we told them apart</h2>
+<ul>
+<li><code>parser</code> vs <code>hint</code>: <code>causeOf()</code> reads each tenant's locale (does it write the day first?) and booking form (which order its hint prints), never intake's guess.</li>
+<li>one-day vs month-flip: the report's own words. A date moved by exactly one day &mdash; one names two time zones for the same meeting &mdash; is not a day/month swap. These are the desk's <code>oneDayMove</code> list in <code>desk-notes.json</code>.</li>
+</ul>
+<p class="stamp">desk ref <b>DR-5JND-AMD5</b></p>
+
+</main>
+<footer>Pages are written by people. Tables and charts are built from data at render time.</footer>
+</div>
+</body>
+</html>

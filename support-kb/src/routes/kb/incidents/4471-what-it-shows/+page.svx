@@ -1,10 +1,10 @@
 ---
 layout: runbook
-title: '#4471 · what it shows — two bugs, not one'
+title: '#4471 · what it shows — three bugs, not one'
 owner: support desk
-status: proposed
+status: open
 reviewed: 2026-10-28
-signature: ''
+signature: v1.eyJzdWIiOiIyMTQ5IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyMTc2MjMsImV4cCI6MTc5MzMwNDAyM30.cwHq2c_CzASGpgYZrMA4PHWGigUoVCadWwnHeJ21zEs
 ---
 
 <script>
@@ -14,56 +14,59 @@ signature: ''
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 </script>
 
-#4471 was closed as *known*: one bug, reported 412 times, one fix queued. Re-reading the
-export with the desk's own cause logic shows **more than one bug** living under that one ticket.
+#4471 was closed as *known*: one bug, reported 412 times, one fix queued. Re-reading the export with
+the desk's own cause logic shows **three bugs** living under that one ticket. The parser fix closes one;
+the other two would stay inside it, marked known, with nobody looking at them.
+
+<Callout>
+Do not close the reports in #4471 when the parser fix ships. Two more problems are inside it.
+</Callout>
 
 ## What the data shows
 
 <CauseTable ticket={4471} />
 
 The table is `causeOf()` ([`src/lib/kb/causes.ts`](../../../../lib/kb/causes.ts)) run over every report
-merged into #4471. It splits them into two causes, and only the larger — `parser` — has a ticket of
-its own. The `hint` reports were merged in by subject line and never got one. The footnote counts a
-third kind of report: a one-day move, not a month flip — a timezone issue, handled as a footnote under
-the parser ticket, not a ticket of its own. The *tagged as* column shows intake's own tags disagree
-with the cause, so the tags were not used to split.
+merged into #4471. It shows two causes — `parser` and `hint` — and only the larger, `parser`, has a
+ticket of its own. The footnote under it marks a third thing: reports read as a one-day move, filed in
+the `parser` row by tenant. The *tagged as* column shows intake's own tags disagree with the cause, so
+the tags were not used to split.
 
-## Two problems, two tickets
+## Three problems, three tickets
 
-The one ticket is really two. Each is now its own GitHub issue, with the count of reports it covers:
+Each is its own GitHub issue, with the count of reports it covers, counted as the table counts (one id =
+one report; cause from the tenant's locale and form):
 
-1. **Parser reads dates month-first** — the day-first parser bug #4471 was opened for; the whole
-   `parser` cause-group, counted as the table counts it. 5 of these are a one-day move the table
-   footnotes (see below).
+1. **Parser reads dates month-first** — the day-first bug #4471 was opened for; the whole `parser`
+   cause-group. Fixed by the desk → closed.
    → [issue #1](https://github.com/BartCodeDev/MegaDevCourse/issues/1) · **379 reports**
 2. **booking-v3 form hint misleads day-first users** — a *different* bug: the form prints an
-   `MM/DD/YYYY` hint, so day-first users type month-first. `form` channel only.
+   `MM/DD/YYYY` hint, so day-first users type month-first. `form` channel only. The parser fix does not
+   touch it → closed as not planned.
    → [issue #2](https://github.com/BartCodeDev/MegaDevCourse/issues/2) · **33 reports**
+3. **One-day / timezone shift** — dates off by a single day, not swapped by a month. The desk's own
+   `oneDayMove` footnote; a swap cannot move a date by one day, so it is a third problem — unconfirmed,
+   still **open**.
+   → [issue #3](https://github.com/BartCodeDev/MegaDevCourse/issues/3) · **5 reports**
 
-**Footnote — not a third ticket.** 5 reports (`R-41202`, `R-41209`, `R-41236`, `R-41344`, `R-41620` — the
-desk's `oneDayMove` list) are off by a single day, not by a month: a timezone / DST boundary, not the
-parser, because a month swap cannot move a date by one day. They sit in the `parser` row by tenant and the
-table footnotes them. The parser ticket (#1) counts them (as the table does) and footnotes them, asking
-for a timezone check before #4471 is closed.
-
-379 + 33 = 412.
+The two causes are 379 + 33 = 412. The 5 one-day reports are a subset of the `parser` row, taken out for
+their own ticket (#3) because they are not a month flip.
 
 <Callout>
-Merging by subject line ([decision 0001](../../decisions/0001-dedupe-by-subject)) is fast, but it
-counts bugs by how a reporter worded them, not by what causes them. #4471 is two bugs wearing one
-subject.
+Merging by subject line ([decision 0001](../../decisions/0001-dedupe-by-subject)) is fast, but it counts
+bugs by how a reporter worded them, not by what causes them. #4471 is three bugs wearing one subject.
 </Callout>
 
 ## Since April
 
 <QueueTimeline ticket={4471} />
 
-## Why the split is safe
+## How we told them apart
 
-- `parser` and `hint` are the two values `causeOf()` returns; the line between them is computed from
-  each tenant's locale and form, not guessed.
-- The 5 one-day reports are the desk's own `oneDayMove` list in
-  [`desk-notes.json`](../../../../lib/data/desk-notes.json). Their bodies describe a one-day move —
-  one names two time zones for the same meeting — not a month flip.
+- `parser` vs `hint`: `causeOf()` reads each tenant's locale (does it write the day first?) and booking
+  form (which order its hint prints), never intake's guess.
+- one-day vs month-flip: the report's own words. A date moved by exactly one day — one names two time
+  zones for the same meeting — is not a day/month swap. These are the desk's `oneDayMove` list in
+  [`desk-notes.json`](../../../../lib/data/desk-notes.json).
 
 <RenderStamp {signature} />
